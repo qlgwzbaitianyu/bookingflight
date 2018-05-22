@@ -27,8 +27,7 @@ public class PassengerDaoIpm implements PassengerDao {
 			ps.setString(1, username);
 			ps.setString(2, password);
 			rs = ps.executeQuery();
-			
-			// no match return null other wise return new bean
+			/* no match return null other wise return new bean */
 			if(rs.next() == false) {
 				System.out.println("no match!");
 				return null;
@@ -39,14 +38,82 @@ public class PassengerDaoIpm implements PassengerDao {
 						rs.getString(8), rs.getString(9), rs.getString(10), 
 						rs.getInt(11), rs.getString(12));		
 			}
-		} catch (Exception e) {
-			// database exception handling
+		}catch (Exception e) {		/* database exception handling */
+			e.printStackTrace();
+		}
+		dbutil.closeDbResources(conn, ps); /* close db resource */
+		return pb;
+	}
+
+	@Override
+	public boolean updateProfile(int pass_id, String firstName, String lastName, String street, String city, String state, int zipCode,
+			String email) {
+		boolean updateResult = true;
+		Connection conn = null;
+		PreparedStatement ps=null;
+		PassengerBean pb = null;
+		DBUtil dbutil = new DBUtil();
+		String query ="update passenger set" + 
+				" firstname = ?, lastname = ?, street = ?, city = ?, state = ?, zipcode = ?, email = ? " + 
+				" where pass_id = ?;";
+		
+		try {
+			conn = dbutil.loadDriver();
+			ps = dbutil.getPreparedStatement(conn, query);
+			ps.setString(1, firstName);
+			ps.setString(2, lastName);
+			ps.setString(3, street);
+			ps.setString(4, city);
+			ps.setString(5, state);
+			ps.setInt(6, zipCode);
+			ps.setString(7, email);
+			ps.setInt(8, pass_id);
+			System.out.println(ps);
+			ps.executeUpdate();
+		}catch (Exception e) {		/* database exception handling */
+				e.printStackTrace();
+		}
+			
+		dbutil.closeDbResources(conn, ps); /* close db resource */
+		return updateResult;
+	}
+
+	@Override
+	public PassengerBean register(PassengerBean passengerBean, String userName, String passWord) {
+		Connection conn = null;
+		PreparedStatement ps=null;
+		PassengerBean pb = null;
+		DBUtil dbutil = new DBUtil();
+		String queryInsertLogin = "insert into logintable values(?, ?);";
+		String queryInsertPassenger = "insert into passenger values(0, ?, 'user', ?, ?, ?, ?, ?, ?, ?);";
+		
+		try {
+			conn = dbutil.loadDriver();
+			ps = dbutil.getPreparedStatement(conn, queryInsertLogin);
+			ps.setString(1, userName);
+			ps.setString(2, passWord);
+			ps.executeUpdate();
+		}catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		// close db resource
-		dbutil.closeDbResources(conn, ps);
-		return pb;
+		try {		/* insert in login table*/
+			ps = dbutil.getPreparedStatement(conn, queryInsertPassenger);
+			ps.setString(1, userName);
+			ps.setString(2, passengerBean.getFirstname());
+			ps.setString(3, passengerBean.getLastname());
+			ps.setString(4, passengerBean.getStreet());
+			ps.setString(5, passengerBean.getCity());
+			ps.setString(6, passengerBean.getState());
+			ps.setInt(7, passengerBean.getZipcode());
+			ps.setString(8, passengerBean.getEmail());
+			ps.executeUpdate();
+		}catch (Exception e) {		/* database exception handling */
+				e.printStackTrace();
+		}
+			
+		dbutil.closeDbResources(conn, ps); /* close db resource */
+		return null;
 	}
 	
 

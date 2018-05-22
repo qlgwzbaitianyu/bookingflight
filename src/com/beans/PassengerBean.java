@@ -14,7 +14,9 @@ public class PassengerBean {
 	private String email;
 	
 	
-	public PassengerBean(int pass_id, String username, String usertype, String firstname, String lastname, String street, String city, String state, int zipcode, String email ) {
+	public PassengerBean(int pass_id, String username, String usertype, 
+						String firstname, String lastname, String street, 
+						String city, String state, int zipcode, String email ) {
 		this.pass_id = pass_id;
 		this.username = username;
 		this.usertype = usertype;

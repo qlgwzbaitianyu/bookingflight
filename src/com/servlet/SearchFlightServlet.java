@@ -19,7 +19,6 @@ import com.service.copy.FlightServiceIpm;
 public class SearchFlightServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {	
-		
 		String depart = request.getParameter("depart");
 		String destination = request.getParameter("destination");
 		String depdate = request.getParameter("depdate");
@@ -39,16 +38,15 @@ public class SearchFlightServlet extends HttpServlet {
 		else {
 			System.out.println("empty result");
 			page = "UserHome.jsp";
-			resultmsg = null;
+			resultmsg = "no available result";
 		}
 		
-		// set param forword the servlet
+		/* set param forword the servlet */
 		request.setAttribute("resultmsg", resultmsg);
 		RequestDispatcher rd = request.getRequestDispatcher(page);
 		rd.forward(request, response);
 	}
 
-	
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	}

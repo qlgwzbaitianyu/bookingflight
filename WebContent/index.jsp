@@ -7,18 +7,24 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Welcome</title>
 </head>
 <body>
 
 	<font color="red" size="5">Welcome to book fight tickets !</font>
 	<br>
-	<font color="red" size="5">${msg}</font>
+	<font color="red" size="5">${loginmsg}</font>
+	
+	<%session.invalidate(); %>
 	
 	<form action='LoginServlet'>
 		<input type='text' name='username' placeholder='Enter Username'><br>
 		<input type='password' name='password' placeholder='Enter Password'><br>
 		<input type='submit' value='Login'>
+	</form>
+	
+	<form action='Register.jsp'>
+		<input type='submit' value='Register'>
 	</form>
 	
 	

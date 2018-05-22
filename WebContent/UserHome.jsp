@@ -6,21 +6,22 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>UserHome</title>
 </head>
 <body>
 
 	<font color="red" size="5">Welcome to UserHome !</font>
-	
-	
 	<br>
+	<font color = "red" size = "6">${cancelMessage}</font>
 	<br>
-	<c:set var="val" value="${resultmsg}"/>
+	<font color = "red" size = "6">${resultmsg}</font>
+	<br>
+	<%-- <c:set var="val" value="${resultmsg}"/>
 	<c:if test="${val == null}">
 	<%= "No flight results mathes your input" %>
 	<br>
 	<br>
-	</c:if>
+	</c:if> --%>
 	
 	
 	<c:set var="val" value="${loginmsg}"/>
@@ -42,11 +43,11 @@
   		<br>
   		<%= "Role" + pb.getUsertype() %>
   	 
-  		<br>
 	
 	
 	</c:if>
 	
+	<br>
 	<form action='SearchFlightServlet'>
 		<input type='text' name='depart' placeholder='Enter depart'><br>
 		<input type='test' name='destination' placeholder='Enter destination'><br>
@@ -55,7 +56,17 @@
 		<input type='submit' value='Search'>
 	</form>
  		
+ 	<br>
+	<form action='UpdateProfile.jsp'>
+		<input type='submit' value='Edit Profile'>
+	</form>
+	<form action='ViewReservationServlet'>
+		<input type='submit' value='View My Reservations'>
+	</form>
 	
+	<form action='index.jsp'>
+		<input type='submit' value='Log out'>
+	</form>
 
 </body>
 </html>

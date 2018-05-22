@@ -22,19 +22,18 @@ import com.service.copy.PassengerServiceIpm;
 public class LoginServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
        
-  
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String username = request.getParameter("username");
 		String password = request.getParameter("password");
 		String page;
 		String loginmsg = null;
-		String resultmsg = "no result";
+		String resultmsg = null;
 		HttpSession session = request.getSession();
 		
-		// check user valid or not
+		/* check user valid or not */
 		PassengerServiceIpm passengerservice = new PassengerServiceIpm();
-		PassengerBean pb = passengerservice.verifyUser(username, password);
-		
+		PassengerBean pb = passengerservice.verifyUser(username, password);	/* return the passenger bean pb */
+		/* check user valid or not */
 		if(pb != null) {
 			System.out.println("valid user");
 			session.setAttribute("profile", pb);
@@ -46,11 +45,12 @@ public class LoginServlet extends HttpServlet {
 			loginmsg = "invalid user please re-input user name and password !";
 			page = "index.jsp";
 		}
-		
+		/* set param and forward servlet */
 		request.setAttribute("loginmsg", loginmsg);
 		request.setAttribute("resultmsg", resultmsg);
 		RequestDispatcher rd = request.getRequestDispatcher(page);
 		rd.forward(request, response);
+		
 	}
 
 	

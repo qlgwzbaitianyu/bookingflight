@@ -10,7 +10,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Insert title here</title>
+<title>Search_Result</title>
 </head>
 <body>
 
@@ -20,15 +20,19 @@
 	<br>
 	<br>
 	
+	
+	<c:set var="val" value="${classTypeMessage}"/>
+	<br>
+	<br>
+	<c:if test="${val != null}">
+		<%= "entered wrong Class Type" %>
+	</c:if>
+	
 	<c:set var="val" value="${resultmsg}"/>
-	<%-- <c:out value="${resultmsg}"></c:out> --%>
 	<br>
 	<br>
 	<c:if test="${val != null}">
 		<% List<FlightBean> fb = (List<FlightBean>)request.getSession().getAttribute("searchresult"); %>
-		<%
-			System.out.print(fb.get(0).getAirport());
-		%>
 		
 		<% for(int i = 0; i < fb.size(); i+=1) { %>
         <tr>
@@ -36,7 +40,7 @@
         	<td><%="Depart time: "%></td>
             <td><%=fb.get(i).getDeptime()%></td>
             <br>
-            <td><%="Depart date: "%></td>
+            <td><%="Depart date: "%></td> 
             <td><%=fb.get(i).getDepdate()%></td>
             <br>
             <td><%="Depart city: "%></td>
@@ -57,23 +61,25 @@
         	<td><%="Available Seat Number: "%></td>
         	<td><%=fb.get(i).getSeat()%></td>
         	<br>
-        	<form action='BookFlightServlet'>
+        	<form action='BookingServlet'>
+        		<input type='hidden' name='flightNumber'  value="<%=fb.get(i).getFlight_number()%>">  <br>
+        		<input type='text' name='baggage' value='Input your baggage info'> <br>
+        		<input type='text' name='classType' value='Input the class type'> <br>
 				<input type='submit' value='Book Flight'>
+				
 			</form>
         	
         </tr>
         <br>
         <br>
     <% } %>
-		<%-- <c:forEach items="${flightlist}" var="flightbean">
-    	<tr>      
-        	<td>${flightbean.getDestination()}</td>
-    	</tr>
-		</c:forEach> --%>
+		
 	</c:if>
 	
 	<br>
 	
-	
+	<form action='UserHome.jsp'>
+		<input type='submit' value='Go Back to Home'>		
+	</form>
 </body>
 </html>
