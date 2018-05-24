@@ -16,6 +16,7 @@ public class PassengerServiceIpm implements PassengerService {
 		return new PassengerDaoIpm().updateProfile(pass_id, firstName, lastName, street, city, state, zipCode, email);
 	}
 	
+	@Override
 	public PassengerBean register(PassengerBean passengerBean, String userName, String passWord) {
 		return new PassengerDaoIpm().register(passengerBean, userName, passWord);
 	}

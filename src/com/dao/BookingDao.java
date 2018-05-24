@@ -12,6 +12,10 @@ public interface BookingDao {
 	
 	public  List<BookingBean> viewReservations(int passengerId);
 	
+	public  List<BookingBean> viewAllReservations();
+	
 	public boolean cancelReservation(int BookingId, int flightNumber, String classType);
+	
+	
 
 }

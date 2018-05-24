@@ -4,7 +4,7 @@ package com.beans;
 public class PassengerBean {
 	private int pass_id;
 	private String username;
-	private String usertype;
+	public String usertype;
 	private String firstname;
 	private String lastname;
 	private String street;

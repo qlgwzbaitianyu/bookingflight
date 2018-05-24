@@ -196,4 +196,31 @@ public class BookingDaoIpm implements BookingDao {
 		}
 	}
 
+	@Override
+	public List<BookingBean> viewAllReservations() {
+		Connection conn = null;
+		PreparedStatement ps=null;
+		ResultSet rs = null;
+		List<BookingBean> bookingList = new LinkedList<BookingBean>();
+		DBUtil dbutil = new DBUtil();		
+		String query = "select * from booking;";
+		
+		try {
+			conn = dbutil.loadDriver();
+			ps = dbutil.getPreparedStatement(conn, query);
+			rs = ps.executeQuery();
+			while(rs.next()) {
+				BookingBean bookingBean = new BookingBean(rs.getInt(1), rs.getInt(2), 
+										rs.getInt(3), rs.getInt(4), rs.getString(5), 
+										rs.getString(6), rs.getString(7));
+				bookingList.add(bookingBean);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		/* close db resource */
+		dbutil.closeDbResources(conn, ps);
+		return bookingList;
+	}
+
 }

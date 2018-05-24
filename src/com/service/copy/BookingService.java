@@ -11,4 +11,7 @@ public interface BookingService {
 	
 	public boolean cancelReservation(int BookingId, int flightNumber, String classType);
 	
+	public  List<BookingBean> viewAllReservations();
+	
+	
 }

@@ -12,9 +12,7 @@ import javax.servlet.http.HttpSession;
 import com.beans.PassengerBean;
 import com.service.copy.PassengerServiceIpm;
 
-/**
- * Servlet implementation class UpdateServlet
- */
+
 @WebServlet("/UpdateServlet")
 public class UpdateServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -25,27 +23,39 @@ public class UpdateServlet extends HttpServlet {
 		String resultmsg = null;
 		PassengerBean pb = (PassengerBean) session.getAttribute("profile");
 		int pass_id = pb.getPass_id();			/* get the user passid from session profile*/
-		int zipCode = Integer.parseInt(request.getParameter("zipCode"));
 		
-		PassengerServiceIpm passengerService = new PassengerServiceIpm();
-		PassengerBean updateBean = new PassengerBean(pass_id, pb.getUsername(), pb.getUsertype(), request.getParameter("firstName"), request.getParameter("lastName"), 
-				request.getParameter("street"), request.getParameter("city"), 
-				request.getParameter("state"), zipCode, 
-				request.getParameter("email"));
-		
-		/* ******* parse int may have problem .... should pass a bean*/
-	
-	
-		passengerService.updateProfile(pass_id, request.getParameter("firstName"), request.getParameter("lastName"), 
-									request.getParameter("street"), request.getParameter("city"), 
-									request.getParameter("state"), zipCode, request.getParameter("email"));
-		
-		/* set updatedbean to session and forward request to userhome*/
-		request.setAttribute("loginmsg", loginmsg);
-		request.setAttribute("resultmsg", resultmsg);
-		session.setAttribute("profile", updateBean);
-		RequestDispatcher rd = request.getRequestDispatcher("UserHome.jsp");
-		rd.forward(request, response);
+		/* handle the invalid input*/
+		if((request.getParameter("zipCode").matches("[0-9]+")) == false) {
+			RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+			String errorMsg = "wrong input for zipcode should be a positive number";
+			request.setAttribute("errorMsg", errorMsg);
+			rd.forward(request, response);
+		}
+		else {
+			int zipCode = Integer.parseInt(request.getParameter("zipCode"));
+			PassengerServiceIpm passengerService = new PassengerServiceIpm();
+			PassengerBean updateBean = new PassengerBean(pass_id, pb.getUsername(), pb.getUsertype(), request.getParameter("firstName"), request.getParameter("lastName"), 
+					request.getParameter("street"), request.getParameter("city"), 
+					request.getParameter("state"), zipCode, 
+					request.getParameter("email"));
+			/* update the passenger bean */
+			passengerService.updateProfile(pass_id, request.getParameter("firstName"), request.getParameter("lastName"), 
+										request.getParameter("street"), request.getParameter("city"), 
+										request.getParameter("state"), zipCode, request.getParameter("email"));
+			
+			/* set updatedbean to session and forward request to user or admin home*/
+			request.setAttribute("loginmsg", loginmsg);
+			request.setAttribute("resultmsg", resultmsg);
+			session.setAttribute("profile", updateBean);
+			if(updateBean.getUsertype().equals("admin")) {
+				RequestDispatcher rd = request.getRequestDispatcher("AdminHome.jsp");
+				rd.forward(request, response);
+			}
+			else {
+				RequestDispatcher rd = request.getRequestDispatcher("UserHome.jsp");
+				rd.forward(request, response);
+			}
+		}
 	}
 
 

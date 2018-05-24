@@ -27,17 +27,15 @@ public class SearchFlightServlet extends HttpServlet {
 		HttpSession session = request.getSession();
 		FlightServiceIpm flightservice = new FlightServiceIpm();
 		
-		// do the service method
+		/*search the flight base on depart, destination and depdate, return a list of flightbean*/
 		List<FlightBean> flightlist = flightservice.searchFlight(depart, destination, depdate);
-		
-		if(flightlist.size() != 0) {
+		if(flightlist.size() != 0) {		/*find results save the list for displaying by jsp*/
 			session.setAttribute("searchresult", flightlist);
 			page = "SearchResult.jsp";
 			resultmsg = "search result: ";
 		}
 		else {
-			System.out.println("empty result");
-			page = "UserHome.jsp";
+			page = "UserHome.jsp";		/* no matching flights*/
 			resultmsg = "no available result";
 		}
 		

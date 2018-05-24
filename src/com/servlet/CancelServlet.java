@@ -18,12 +18,13 @@ public class CancelServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int bookingId = Integer.parseInt(request.getParameter("bookingId"));
+		int bookingId = Integer.parseInt(request.getParameter("bookingId"));	/* pass by hidden field not user input*/
 		int flightNumber = Integer.parseInt(request.getParameter("flightNumber"));
 		String classType = request.getParameter("classType");
 		BookingServiceIpm bookingService = new BookingServiceIpm();
 		String cancelMessage;
-		/* pass bookingId to service*/
+		
+		/* pass bookingId to service to cancel the booking*/
 		System.out.println("booking id: " + bookingId + " flight numer: " + flightNumber + "classType: " + classType);
 		if(bookingService.cancelReservation(bookingId, flightNumber, classType)) {
 			cancelMessage = "cancelation succuss";
@@ -31,6 +32,7 @@ public class CancelServlet extends HttpServlet {
 		else {
 			cancelMessage = "cancelation failed";
 		}
+		
 		request.setAttribute("cancelMessage", cancelMessage);
 		RequestDispatcher rd = request.getRequestDispatcher("UserHome.jsp");
 		rd.forward(request, response);

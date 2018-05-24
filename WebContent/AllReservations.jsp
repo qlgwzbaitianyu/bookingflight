@@ -11,10 +11,12 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>Booking_Result</title>
+<title>All reservations</title>
 </head>
 <body>
 
+	<font color="red" size="5">All reservations: </font>
+	
  	<font color="red" size="5">${bookingResultMessage}</font>
 	<br>
 	<br>
@@ -24,6 +26,7 @@
 	<c:if test="${val == null}">
 		<%= "no booking result" %>
 	</c:if> 
+	
 	<br>
 	
 	<c:if test="${val != null}">
@@ -31,15 +34,8 @@
 		
 		<% for(int i = 0; i < bookingBeanList.size(); i+=1) { %>
         <tr>
-        	<br>
         	<td><%="Booking Id: "%></td>
             <td><%=bookingBeanList.get(i).getBookId()%></td>
-            <br>
-            
-            <% PassengerBean pb = (PassengerBean)request.getSession().getAttribute("profile"); %>
-  			<%= "First name: " + pb.getFirstname() %>
-  			<br>
-  			<%= "Last name: " + pb.getLastname() %>
             <br>
             
             <td><%="Passenger Id: "%></td>
@@ -65,19 +61,24 @@
             <td><%="Reservation Status: "%></td>
             <td><%=bookingBeanList.get(i).getReservStatus()%></td>
             <br>
-            <br>
-            <form action='CancelServlet'>
-        		<input type='hidden' name='bookingId'  value="<%=bookingBeanList.get(i).getBookId()%>">
-        		<input type='hidden' name='flightNumber'  value="<%=bookingBeanList.get(i).getPassengerId()%>">
-        		<input type='hidden' name='classType'  value="<%=bookingBeanList.get(i).getClassType()%>">
+            
+           <%--  <form action='CancelServlet'>
+        		<input type='hidden' name='bookingId'  value="<%=bookingBeanList.get(i).getBookId()%>"><br>
+        		<input type='hidden' name='flightNumber'  value="<%=bookingBeanList.get(i).getPassengerId()%>"><br>
+        		<input type='hidden' name='classType'  value="<%=bookingBeanList.get(i).getClassType()%>"><br>
 				<input type='submit' value='Cancel Flight'>
-			</form>
+				
+			</form> --%>
+            
         </tr>
+        <br>
+        <br>
     <% } %>
+		
 	</c:if> 
-	<br> 
+	 
 	<br>
-	<form action='UserHome.jsp'>
+	<form action='AdminHome.jsp'>
 		<input type='submit' value='Go Back to Home'>		
 	</form>
 	

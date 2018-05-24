@@ -26,18 +26,28 @@ import com.service.copy.PassengerServiceIpm;
 public class RegisterServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		int zipCode = Integer.parseInt(request.getParameter("zipCode"));
-		
+		int zipCode;	/* need to check the parse int exception*/
 		PassengerServiceIpm passengerService = new PassengerServiceIpm();
-		PassengerBean registerBean = new PassengerBean(0, request.getParameter("uerName"), "user", request.getParameter("firstName"), request.getParameter("lastName"), 
-				request.getParameter("street"), request.getParameter("city"), 
-				request.getParameter("state"), zipCode, 
-				request.getParameter("email"));
-		passengerService.register(registerBean, request.getParameter("uerName"), request.getParameter("passWord"));
 		
-		session.setAttribute("profile", registerBean);
-		RequestDispatcher rd = request.getRequestDispatcher("UserHome.jsp");
-		rd.forward(request, response);
+		if((request.getParameter("zipCode").matches("[0-9]+")) == false) {
+			RequestDispatcher rd = request.getRequestDispatcher("error.jsp");
+			String errorMsg = "wrong input for zipcode should be a positive number";
+			request.setAttribute("errorMsg", errorMsg);
+			rd.forward(request, response);
+		}
+		else {
+			zipCode = Integer.parseInt(request.getParameter("zipCode"));
+			/*register the passenger bean*/
+			PassengerBean registerBean = new PassengerBean(0, request.getParameter("uerName"), "user", request.getParameter("firstName"), request.getParameter("lastName"), 
+					request.getParameter("street"), request.getParameter("city"), 
+					request.getParameter("state"), zipCode, 
+					request.getParameter("email"));
+			passengerService.register(registerBean, request.getParameter("uerName"), request.getParameter("passWord"));
+			
+			session.setAttribute("profile", registerBean);
+			RequestDispatcher rd = request.getRequestDispatcher("UserHome.jsp");
+			rd.forward(request, response);
+		}
 		
 	}
 

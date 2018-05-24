@@ -6,19 +6,18 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>UserHome</title>
+<title>AdminHome</title>
 </head>
 <body>
 
-	<font color="red" size="5">Welcome to UserHome !</font>
+	<font color="red" size="5">Welcome to AdminHome !</font>
 	<br>
 	<font color = "red" size = "6">${cancelMessage}</font>
 	<br>
 	<font color = "red" size = "6">${resultmsg}</font>
 	<br>
-	
-	<c:set var="val" value="${loginmsg}"/>
-	<c:if test="${val == null}">
+	<font color = "red" size = "6">${addReuslt}</font>
+	<br>
 		<% PassengerBean pb = (PassengerBean)request.getSession().getAttribute("profile"); %>
   		<%= "First name: " + pb.getFirstname() %>
   		<br>
@@ -35,23 +34,25 @@
   		<%= "Zip codeL: " + pb.getZipcode() %>
   		<br>
   		<%= "Role: " + pb.getUsertype() %>
-	</c:if>
 	
 	<br>
-	<form action='SearchFlightServlet'>
-		<input type='text' name='depart' placeholder='Enter depart'><br>
-		<input type='test' name='destination' placeholder='Enter destination'><br>
-		<input type='text' name='depdate' placeholder='yyyy-mm-dd'><br> 	
-		
-		<input type='submit' value='Search'>
-	</form>
  		
  	<br>
+ 	
 	<form action='UpdateProfile.jsp'>
 		<input type='submit' value='Edit Profile'>
 	</form>
+	
 	<form action='ViewReservationServlet'>
-		<input type='submit' value='View My Reservations'>
+		<input type='submit' value='View all Reservations'>
+	</form>
+	
+	<form action='AddFlight.jsp'>
+		<input type='submit' value='Add flight'>
+	</form>
+	
+	<form action='ViewFlightServlet'>
+		<input type='submit' value='View all Flights'>
 	</form>
 	
 	<form action='index.jsp'>

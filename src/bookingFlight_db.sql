@@ -107,10 +107,9 @@ where logintable.username = 'annie' and logintable.password='123';
 
 select booking_id from booking
 
-
-
-
 select * from flight where depart = ? and destination = ? and depdate = ?;
+
+SELECT MAX(flight_number) FROM flight;
 
 update passenger
 set street = 'top', city = 'kansas'

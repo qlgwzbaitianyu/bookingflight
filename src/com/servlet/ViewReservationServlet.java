@@ -22,23 +22,43 @@ public class ViewReservationServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		PassengerBean passengerBean = (PassengerBean) session.getAttribute("profile");
-		int passengerId = passengerBean.getPass_id();
-		List<BookingBean> bookBeanList = new BookingServiceIpm().viewReservations(passengerId);
-		String page = "BookingResult.jsp";
-		String bookingResultMessage;
 		
-		if(bookBeanList.size() != 0) {
-			session.setAttribute("viewBookingresult", bookBeanList);
-			bookingResultMessage = "booking result: ";
+		/* base on user or adimin do the search*/
+		if(passengerBean.getUsertype().equals("admin")) {
+			List<BookingBean> bookBeanList = new BookingServiceIpm().viewAllReservations();
+			String page = "AllReservations.jsp";	/* admin return result to allreseravtion.jsap*/
+			String bookingResultMessage;
+			
+			if(bookBeanList.size() != 0) {
+				session.setAttribute("viewBookingresult", bookBeanList);
+				bookingResultMessage = "booking result: ";
+			}
+			else {
+				bookingResultMessage = null;
+			}
+			/* set param forword the servlet */
+			request.setAttribute("bookingResultMessage", bookingResultMessage);
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
 		}
 		else {
-			bookingResultMessage = null;
+			int passengerId = passengerBean.getPass_id();
+			List<BookingBean> bookBeanList = new BookingServiceIpm().viewReservations(passengerId);
+			String page = "BookingResult.jsp";			/* user retrun to bookingresult.jsp*/
+			String bookingResultMessage;
+			
+			if(bookBeanList.size() != 0) {
+				session.setAttribute("viewBookingresult", bookBeanList);
+				bookingResultMessage = "booking result: ";
+			}
+			else {
+				bookingResultMessage = null;
+			}
+			/* set param forword the servlet */
+			request.setAttribute("bookingResultMessage", bookingResultMessage);
+			RequestDispatcher rd = request.getRequestDispatcher(page);
+			rd.forward(request, response);
 		}
-		
-		/* set param forword the servlet */
-		request.setAttribute("bookingResultMessage", bookingResultMessage);
-		RequestDispatcher rd = request.getRequestDispatcher(page);
-		rd.forward(request, response);
 	}
 
 

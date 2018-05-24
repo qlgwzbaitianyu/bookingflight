@@ -24,8 +24,21 @@
 		<input type='submit' value='Update Profile'>
 	</form>
 
-	<form action='UserHome.jsp'>
-		<input type='submit' value='Go Back to Home'>		
+	<c:set var="val" value="${profile.usertype}"/>
+	<br>
+	<c:if test="${val == 'user'}">
+		<form action='UserHome.jsp'>
+		<input type='submit' value='Go Back to User Home'>		
 	</form>
+	</c:if>
+	
+	<c:set var="val" value="${profile.usertype}"/>
+	<br>
+	<c:if test="${val == 'admin'}">
+		<form action='AdminHome.jsp'>
+		<input type='submit' value='Go Back to Admin Home'>		
+	</form>
+	</c:if>
+	
 </body>
 </html>

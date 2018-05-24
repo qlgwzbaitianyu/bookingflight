@@ -15,7 +15,7 @@
 	<br>
 	<font color="red" size="5">${loginmsg}</font>
 	
-	<%session.invalidate(); %>
+	<%session.invalidate();%>
 	
 	<form action='LoginServlet'>
 		<input type='text' name='username' placeholder='Enter Username'><br>

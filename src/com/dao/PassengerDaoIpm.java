@@ -10,7 +10,7 @@ import com.dbtuil.DBUtil;
 public class PassengerDaoIpm implements PassengerDao {
 
 	@Override
-	public PassengerBean verify(String username, String password) {
+	public PassengerBean verify(String userName, String passWord) {
 		Connection conn = null;
 		PreparedStatement ps=null;
 		ResultSet rs = null;
@@ -22,12 +22,13 @@ public class PassengerDaoIpm implements PassengerDao {
 		DBUtil dbutil = new DBUtil();
 		
 		try {
-			conn = dbutil.loadDriver();
+			conn = dbutil.loadDriver();			/* load driver and set preparestatement*/
 			ps = dbutil.getPreparedStatement(conn, query);
-			ps.setString(1, username);
-			ps.setString(2, password);
+			ps.setString(1, userName);
+			ps.setString(2, passWord);
 			rs = ps.executeQuery();
-			/* no match return null other wise return new bean */
+			
+			/* no match return null other wise return new passengerbean */
 			if(rs.next() == false) {
 				System.out.println("no match!");
 				return null;
@@ -41,7 +42,7 @@ public class PassengerDaoIpm implements PassengerDao {
 		}catch (Exception e) {		/* database exception handling */
 			e.printStackTrace();
 		}
-		dbutil.closeDbResources(conn, ps); /* close db resource */
+		dbutil.closeDbResources(conn, ps, rs); /* close db resource */
 		return pb;
 	}
 
@@ -60,7 +61,7 @@ public class PassengerDaoIpm implements PassengerDao {
 		try {
 			conn = dbutil.loadDriver();
 			ps = dbutil.getPreparedStatement(conn, query);
-			ps.setString(1, firstName);
+			ps.setString(1, firstName);		/* set prepare satement and update passengerbean*/
 			ps.setString(2, lastName);
 			ps.setString(3, street);
 			ps.setString(4, city);
@@ -68,7 +69,6 @@ public class PassengerDaoIpm implements PassengerDao {
 			ps.setInt(6, zipCode);
 			ps.setString(7, email);
 			ps.setInt(8, pass_id);
-			System.out.println(ps);
 			ps.executeUpdate();
 		}catch (Exception e) {		/* database exception handling */
 				e.printStackTrace();
@@ -87,7 +87,7 @@ public class PassengerDaoIpm implements PassengerDao {
 		String queryInsertLogin = "insert into logintable values(?, ?);";
 		String queryInsertPassenger = "insert into passenger values(0, ?, 'user', ?, ?, ?, ?, ?, ?, ?);";
 		
-		try {
+		try {			/* before create new passnger, insert new row into login table of username and password*/
 			conn = dbutil.loadDriver();
 			ps = dbutil.getPreparedStatement(conn, queryInsertLogin);
 			ps.setString(1, userName);
@@ -97,7 +97,7 @@ public class PassengerDaoIpm implements PassengerDao {
 			e.printStackTrace();
 		}
 		
-		try {		/* insert in login table*/
+		try {		/* create new passenger bean*/
 			ps = dbutil.getPreparedStatement(conn, queryInsertPassenger);
 			ps.setString(1, userName);
 			ps.setString(2, passengerBean.getFirstname());

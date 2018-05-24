@@ -24,7 +24,7 @@
 	<c:set var="val" value="${reserveMessage}"/>
 	<br>
 	<c:if test="${val == null}">
-		<%= "serservation failed, seat is full for that class,  please try other flight" %>
+		<%= "rerservation failed, seat is full for that class,  please try other flight" %>
 	</c:if> 
 	
 	<br>

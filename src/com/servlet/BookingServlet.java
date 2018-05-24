@@ -21,7 +21,6 @@ import com.service.copy.BookingServiceIpm;
 public class BookingServlet extends HttpServlet {
 	
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		
 		HttpSession session = request.getSession();
 		int flightNumber = Integer.parseInt(request.getParameter("flightNumber"));
 		PassengerBean passBean = (PassengerBean) session.getAttribute("profile");
@@ -32,8 +31,7 @@ public class BookingServlet extends HttpServlet {
 		String reserveMessage;
 		String classTypeMessage = null;
 		
-		/*check class type*/
-		
+		/*check the input of class type if invalid, redirect to searchresult.jsp and pomp out error msg*/
 		if((classType.equals("first_class") == false && classType.equals("business_class") == false && classType.equals("economy_class") == false)) {
 			classTypeMessage = "wrong class type format";
 			request.setAttribute("classTypeMessage", classTypeMessage);
@@ -44,7 +42,7 @@ public class BookingServlet extends HttpServlet {
 			/*execute booking service*/
 			BookingBean reserveBean = new BookingServiceIpm().bookFlight(flightNumber, passengerId, classType, baggage);
 			if(reserveBean == null) {
-				/* return user no availabe */
+				/* return user msg no availabe flights*/
 				reserveMessage = null;
 			}
 			else {

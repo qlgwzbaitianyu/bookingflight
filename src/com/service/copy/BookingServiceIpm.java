@@ -21,5 +21,10 @@ public class BookingServiceIpm implements BookingService {
 		return new BookingDaoIpm().cancelReservation(BookingId, flightNumber, classType);
 	}
 
+	@Override
+	public List<BookingBean> viewAllReservations() {
+		return new BookingDaoIpm().viewAllReservations();
+	}
+
 	
 }
